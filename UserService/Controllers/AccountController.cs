@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using UserService.BLL.DTOs;
+using UserService.BLL.Models;
+using UserService.BLL.RepositoryInterfaces;
+using UserService.DAL.Context;
+using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace UserService.Controllers
 {
@@ -6,28 +12,57 @@ namespace UserService.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        private readonly IAccountRepository _accountRepository;
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public AccountController(ILogger<WeatherForecastController> logger)
+        public AccountController(IAccountRepository accountRepository)
         {
-            _logger = logger;
+            _accountRepository = accountRepository;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register([FromBody] UserDTO user)
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            try
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                ServiceResponse<User> response = await _accountRepository.Register(user);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] UserDTO user)
+        {
+            try
+            {
+                ServiceResponse<User> response = await _accountRepository.Login(user);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize]
+        [HttpGet("byID/{id}")]
+        public async Task<IActionResult> GetUserByID(string id)
+        {
+            try
+            {
+                User user = await _accountRepository.Get(Guid.Parse(id));
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }
