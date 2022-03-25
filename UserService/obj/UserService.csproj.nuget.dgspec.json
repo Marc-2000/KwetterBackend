@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Arctic Secrets\\Desktop\\Kwetter\\KwetterBackend\\UserService\\UserService.csproj": {}
+    "C:\\Users\\marcd\\Desktop\\Kwetter\\KwetterBackend\\UserService\\UserService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Arctic Secrets\\Desktop\\Kwetter\\KwetterBackend\\UserService\\UserService.csproj": {
+    "C:\\Users\\marcd\\Desktop\\Kwetter\\KwetterBackend\\UserService\\UserService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Arctic Secrets\\Desktop\\Kwetter\\KwetterBackend\\UserService\\UserService.csproj",
+        "projectUniqueName": "C:\\Users\\marcd\\Desktop\\Kwetter\\KwetterBackend\\UserService\\UserService.csproj",
         "projectName": "UserService",
-        "projectPath": "C:\\Users\\Arctic Secrets\\Desktop\\Kwetter\\KwetterBackend\\UserService\\UserService.csproj",
-        "packagesPath": "C:\\Users\\Arctic Secrets\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Arctic Secrets\\Desktop\\Kwetter\\KwetterBackend\\UserService\\obj\\",
+        "projectPath": "C:\\Users\\marcd\\Desktop\\Kwetter\\KwetterBackend\\UserService\\UserService.csproj",
+        "packagesPath": "C:\\Users\\marcd\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\marcd\\Desktop\\Kwetter\\KwetterBackend\\UserService\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Arctic Secrets\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\marcd\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

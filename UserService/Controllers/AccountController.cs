@@ -4,7 +4,6 @@ using UserService.BLL.DTOs;
 using UserService.BLL.Models;
 using UserService.BLL.RepositoryInterfaces;
 using UserService.DAL.Context;
-using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace UserService.Controllers
 {
@@ -20,7 +19,7 @@ namespace UserService.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] UserDTO user)
+        public async Task<IActionResult> Register([FromBody] UserRegisterDTO user)
         {
             try
             {
@@ -35,7 +34,7 @@ namespace UserService.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] UserDTO user)
+        public async Task<IActionResult> Login([FromBody] UserLoginDTO user)
         {
             try
             {
@@ -55,7 +54,7 @@ namespace UserService.Controllers
         {
             try
             {
-                User user = await _accountRepository.Get(Guid.Parse(id));
+                User user = await _accountRepository.GetByID(Guid.Parse(id));
                 return Ok(user);
             }
             catch (Exception ex)

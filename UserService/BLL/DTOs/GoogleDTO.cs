@@ -7,6 +7,6 @@ namespace UserService.BLL.DTOs
 {
     public class GoogleDTO
     {
-        public string? IDToken { get; set; }
+        public string IDToken { get; set; }
     }
 }

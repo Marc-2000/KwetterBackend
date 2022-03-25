@@ -9,9 +9,8 @@ namespace UserService.BLL.RepositoryInterfaces
 {
     public interface IAccountRepository
     {
-        Task<ServiceResponse<User>> Register(UserDTO user);
-        Task<ServiceResponse<User>> Login(UserDTO user);
-        Task<bool> EmailExists(string email);
-        Task<User> Get(Guid id);
+        Task<ServiceResponse<User>> Register(UserRegisterDTO user);
+        Task<ServiceResponse<User>> Login(UserLoginDTO user);
+        Task<User> GetByID(Guid id);
     }
 }

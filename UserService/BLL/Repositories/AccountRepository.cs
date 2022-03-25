@@ -1,5 +1,4 @@
-﻿using Google.Apis.Auth;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -23,10 +22,10 @@ namespace UserService.BLL.Repositories
             _configuration = configuration;
         }
 
-        public async Task<ServiceResponse<User>> Login(UserDTO user)
+        public async Task<ServiceResponse<User>> Login(UserLoginDTO user)
         {
             // Create new empty response
-            ServiceResponse<User> response = new ServiceResponse<User>();
+            ServiceResponse<User> response = new();
 
             //Retrieve user with e-mail from request
             User retrievedUser = await _context.Users.Include(pr => pr.UserRoles).ThenInclude(r => r.Role).FirstOrDefaultAsync(x => x.Email.ToLower().Equals(user.Email.ToLower()));
@@ -47,24 +46,30 @@ namespace UserService.BLL.Repositories
             return response;
         }
 
-        public async Task<ServiceResponse<User>> Register(UserDTO user)
+        public async Task<ServiceResponse<User>> Register(UserRegisterDTO user)
         {
             //Create new empty response
-            ServiceResponse<User> response = new ServiceResponse<User>();
+            ServiceResponse<User> response = new();
 
             if (await EmailExists(user.Email))
             {
-                //Useraccount with Email already exists, so return error
-                response.Success = false;
-                response.Message = "Email already in use.";
-                return response;
+                return response.BadResponse("e-mailaddress is already in use.");
             }
 
+            if (await UsernameExists(user.Username))
+            {
+                return response.BadResponse("Username is already in use.");
+            }
+
+            if (!user.Password.Equals(user.ConfirmPassword))
+            {
+                return response.BadResponse("The passwords do not match.");
+            }
 
             //Create password hash with salt
             CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            User NewUser = new User
+            User NewUser = new()
             {
                 Email = user.Email,
                 Username = user.Username,
@@ -77,7 +82,7 @@ namespace UserService.BLL.Repositories
             Role defaultRole = _context.Roles.FirstOrDefault(x => x.Name.Equals("User"));
 
             //Set join-table for entity framework
-            UserRole newPersonRole = new UserRole
+            UserRole newPersonRole = new()
             {
                 UserID = NewUser.ID,
                 User = NewUser,
@@ -101,42 +106,45 @@ namespace UserService.BLL.Repositories
 
         public async Task<bool> EmailExists(string email)
         {
-            //Check if user with email already exists
+            //Check if email already exists
             if (await _context.Users.AnyAsync(x => x.Email.ToLower() == email.ToLower())) return true;
             return false;
         }
 
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        public async Task<bool> UsernameExists(string username)
         {
-            //Create password hash with salt
-            using (var hmac = new HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            }
+            //Check if username already exists
+            if (await _context.Users.AnyAsync(x => x.Email.ToLower() == username.ToLower())) return true;
+            return false;
         }
 
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            //Create password hash with salt
+            using var hmac = new HMACSHA512();
+            passwordSalt = hmac.Key;
+            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        }
+
+        private static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             //Verify password hash with salt
-            using (var hmac = new HMACSHA512(passwordSalt))
+            using var hmac = new HMACSHA512(passwordSalt);
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            for (int i = 0; i < computedHash.Length; i++)
             {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                for (int i = 0; i < computedHash.Length; i++)
+                if (computedHash[i] != passwordHash[i])
                 {
-                    if (computedHash[i] != passwordHash[i])
-                    {
-                        return false;
-                    }
+                    return false;
                 }
-                return true;
             }
+            return true;
         }
 
         private string CreateToken(User user)
         {
             //Set claims for token
-            List<Claim> claims = new List<Claim>
+            List<Claim> claims = new()
             {
                 new Claim(ClaimTypes.NameIdentifier, user.ID.ToString())
             };
@@ -150,15 +158,15 @@ namespace UserService.BLL.Repositories
             }
 
             //Add security key to token
-            SymmetricSecurityKey key = new SymmetricSecurityKey(
+            SymmetricSecurityKey key = new(
                 Encoding.UTF8.GetBytes(_configuration.GetSection("Auth:Token").Value)
             );
 
             //Set token credentials
-            SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha512Signature);
 
             //Fill token descriptor
-            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+            SecurityTokenDescriptor tokenDescriptor = new()
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(7),
@@ -166,19 +174,19 @@ namespace UserService.BLL.Repositories
             };
 
             //Create new tokenHandler and create token including tokenDescriptor
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            JwtSecurityTokenHandler tokenHandler = new();
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
 
             //Return JWT 
             return tokenHandler.WriteToken(token);
         }
 
-        public async Task<User> Get(Guid id)
+        public async Task<User> GetByID(Guid id)
         {
             User retrievedUser = await _context.Users.FirstOrDefaultAsync(x => x.ID == id);
             if (retrievedUser != null)
             {
-                User user = new User()
+                User user = new()
                 {
                     ID = retrievedUser.ID,
                     Email = retrievedUser.Email
