@@ -1,6 +1,6 @@
 ﻿namespace MessageService.BLL.Models
 {
-    public class UserChat
+    public class Users
     {
         public Guid UserID { get; set; }
 

@@ -8,6 +8,6 @@
 
         public List<Message> Messages { get; set; }
 
-        public List<UserChat> UserChats { get; set; }
+        public List<Users> Users { get; set; }
     }
 }

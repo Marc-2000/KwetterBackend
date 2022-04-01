@@ -1,4 +1,6 @@
-﻿namespace TweetService.BLL.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TweetService.BLL.Models
 {
     public class UserTweetTags
     {

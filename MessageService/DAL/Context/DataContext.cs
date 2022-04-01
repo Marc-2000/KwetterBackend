@@ -8,19 +8,21 @@ namespace MessageService.DAL.Context
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Chat> Chats { get; set; }
-        public DbSet<UserChat> UserChats { get; set; }
+        public DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserChat>()
+            modelBuilder.Entity<Users>()
                    .HasKey(cu => new { cu.UserID, cu.ChatID });
-            modelBuilder.Entity<UserChat>()
+
+            modelBuilder.Entity<Users>()
                 .HasOne(ch => ch.Chat)
-                .WithMany(cu => cu.UserChats)
+                .WithMany(cu => cu.Users)
                 .HasForeignKey(ch => ch.ChatID);
-            modelBuilder.Entity<UserChat>()
+
+            modelBuilder.Entity<Users>()
                 .HasOne(p => p.User)
-                .WithMany(cu => cu.UserChats)
+                .WithMany(cu => cu.Users)
                 .HasForeignKey(ch => ch.UserID);
 
             modelBuilder.Entity<Chat>()
