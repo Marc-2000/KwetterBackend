@@ -9,6 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.vs\KwetterBackend\v17\.futdcache.v1
+*.vs\KwetterBackend\v17\.suo
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
