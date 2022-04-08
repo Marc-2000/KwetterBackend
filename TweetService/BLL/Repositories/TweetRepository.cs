@@ -17,35 +17,160 @@ namespace TweetService.BLL.Repositories
 
         public async Task<ServiceResponse<Tweet>> PostTweet(TweetDTO tweet)
         {
-            // Create new empty response
             ServiceResponse<Tweet> response = new();
 
-            Tweet newTweet = new()
+            try
             {
-                Text = tweet.Text,
-                DateTime = tweet.DateTime,
-                UserID = tweet.UserID,
-                Likes = 0,
-                Retweets = 0,
-            };
+                Tweet newTweet = new()
+                {
+                    ID = Guid.NewGuid(),
+                    Text = tweet.Text,
+                    DateTime = DateTime.Now,
+                    UserID = tweet.UserID,
+                    Likes = 0,
+                    Retweets = 0,
+                };
 
-            await _context.Tweets.AddAsync(newTweet);
-            await _context.SaveChangesAsync();
+                _context.Tweets.Add(newTweet);
+                await _context.SaveChangesAsync();
 
-            //set return data
-            response.Message = "Tweet created succesfully.";
-            return response;
+                CheckForHashtags(newTweet);
+                CheckForMentions(newTweet);
+
+                response.Message = "Tweet created succesfully.";
+                response.Success = true;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return response.BadResponse("Something went wrong. Please reload the page and try again.");
+            }
         }
 
-        public async Task<ServiceResponse<Tweet>> DeleteTweet(Guid TweetID)
+        public async Task<ServiceResponse<Tweet>> DeleteTweet(Guid tweetId)
         {
-            return null;
+            ServiceResponse<Tweet> response = new();
+
+            try
+            {
+                Tweet tweet = await _context.Tweets.FirstOrDefaultAsync(x => x.ID == tweetId);
+
+                if (tweet == null)
+                {
+                    response.Message = "Tweet does not exist, or is already deleted!";
+                    response.Success = false;
+                    return response;
+                }
+
+                TaggedUser taggedUsers = await _context.TaggedUsers.FirstOrDefaultAsync(x => x.TweetID == tweetId);
+
+                _context.Tweets.Remove(tweet);
+                _context.TaggedUsers.Remove(taggedUsers);
+                await _context.SaveChangesAsync();
+
+                response.Message = "Tweet has been removed!";
+                response.Success = true;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return response.BadResponse("Something went wrong. Please reload the page and try again.");
+            }
         }
 
         public async Task<List<Tweet>> GetTweets() //Timerange?
         {
             var entitiesToReturn = await _context.Tweets.ToListAsync();
             return entitiesToReturn;
+        }
+
+        public void CheckForHashtags(Tweet tweet)
+        {
+            string[] words = tweet.Text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+            List<string> hashtags = new List<string>();
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (words[i].StartsWith("#"))
+                {
+                    hashtags.Add(words[i]);
+                }
+            }
+
+            for (int i = 0; i < hashtags.Count; i++)
+            {
+                Hashtag hashtagFromDb = _context.Hashtags.FirstOrDefault(x => x.Title == hashtags[i]);
+
+                if (hashtagFromDb == null)
+                {
+                    Hashtag newHashtag = new Hashtag()
+                    {
+                        Title = hashtags[i]
+                    };
+
+                    TweetHashtag newTweetHashtag = new TweetHashtag()
+                    {
+                        TweetId = tweet.ID,
+                        Tweet = tweet,
+                        HashtagId = newHashtag.Id,
+                        Hashtag = newHashtag
+                    };
+
+                    _context.Hashtags.Add(newHashtag);
+                    _context.TweetHashtags.Add(newTweetHashtag);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    TweetHashtag newTweetHashtag = new TweetHashtag()
+                    {
+                        TweetId = tweet.ID,
+                        Tweet = tweet,
+                        HashtagId = hashtagFromDb.Id,
+                        Hashtag = hashtagFromDb
+                    };
+
+                    _context.TweetHashtags.Add(newTweetHashtag);
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        public void CheckForMentions(Tweet tweet)
+        {
+            string[] words = tweet.Text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+            List<string> mentions = new List<string>();
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (words[i].StartsWith("@"))
+                {
+                    mentions.Add(words[i]);
+                }
+            }
+
+            for (int i = 0; i < mentions.Count; i++)
+            {
+                string username = mentions[i].Replace("@", string.Empty);
+
+                User userFromDb = _context.Users.FirstOrDefault(x => x.Username == username);
+
+                if (userFromDb != null)
+                {
+                    TaggedUser taggedUsers = new()
+                    {
+                        UserID = userFromDb.ID,
+                        TweetID = tweet.ID
+                    };
+
+                    _context.TaggedUsers.Add(taggedUsers);
+                    _context.SaveChangesAsync();
+                }
+            }
         }
     }
 }

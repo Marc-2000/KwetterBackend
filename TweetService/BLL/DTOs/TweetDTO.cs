@@ -9,8 +9,5 @@ namespace TweetService.BLL.DTOs
 
         [Required]
         public Guid UserID { get; set; }
-
-        [Required]
-        public DateTime DateTime { get; set; }
     }
 }

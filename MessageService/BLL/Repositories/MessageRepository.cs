@@ -24,7 +24,7 @@ namespace MessageService.BLL.Repositories
                 Text = messageDTO.message,
                 UserID = messageDTO.UserID,
                 ChatID = messageDTO.ChatID,
-                Time = messageDTO.DateTime
+                Time = DateTime.Now
             };
 
             await _context.Messages.AddAsync(message);

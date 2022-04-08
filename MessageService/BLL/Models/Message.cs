@@ -17,5 +17,8 @@ namespace MessageService.BLL.Models
 
         [JsonIgnore]
         public Chat Chat { get; set; }
+
+        [JsonIgnore]
+        public User User { get; set; }
     }
 }

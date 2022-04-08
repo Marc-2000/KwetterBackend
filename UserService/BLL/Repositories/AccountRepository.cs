@@ -81,7 +81,6 @@ namespace UserService.BLL.Repositories
             //Add default role to new user
             Role defaultRole = _context.Roles.FirstOrDefault(x => x.Name.Equals("User"));
 
-            //Set join-table for entity framework
             UserRole newPersonRole = new()
             {
                 UserID = NewUser.ID,
@@ -92,7 +91,6 @@ namespace UserService.BLL.Repositories
 
             //Add user and user-role to database
             await _context.Users.AddAsync(NewUser);
-            await _context.SaveChangesAsync();
             await _context.UserRoles.AddAsync(newPersonRole);
             await _context.SaveChangesAsync();
 

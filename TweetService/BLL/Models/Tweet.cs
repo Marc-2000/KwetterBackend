@@ -17,6 +17,7 @@ namespace TweetService.BLL.Models
 
         public int Retweets { get; set; }
 
-        //public List<UserTweetTags> UserTweetTags { get; set; }
+        public List<TaggedUser> TaggedUsers { get; set; }
+        public List<TweetHashtag> TweetHashtags { get; set; }
     }
 }

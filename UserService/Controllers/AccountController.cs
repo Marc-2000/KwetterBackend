@@ -8,7 +8,7 @@ using UserService.DAL.Context;
 namespace UserService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;

@@ -1,8 +1,10 @@
 ﻿namespace MessageService.BLL.Models
 {
-    public class Users
+    public class ChatUser
     {
         public Guid UserID { get; set; }
+
+        public User User { get; set; }
 
         public Guid ChatID { get; set; }
 

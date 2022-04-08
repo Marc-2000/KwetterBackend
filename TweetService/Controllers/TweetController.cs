@@ -8,7 +8,7 @@ using TweetService.BLL.Models;
 namespace TweetService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class TweetController : ControllerBase
     {
         private readonly ITweetRepository _tweetRepository;
@@ -18,7 +18,6 @@ namespace TweetService.Controllers
             _tweetRepository = tweetRepository;
         }
 
-        [Authorize]
         [HttpPost("PostTweet")]
         public async Task<IActionResult> PostTweet([FromBody] TweetDTO tweet)
         {
@@ -34,8 +33,7 @@ namespace TweetService.Controllers
             }
         }
 
-        [Authorize]
-        [HttpPost("DeleteTweet")]
+        [HttpDelete("DeleteTweet")]
         public async Task<IActionResult> DeleteTweet([FromBody] Guid TweetID)
         {
             try
