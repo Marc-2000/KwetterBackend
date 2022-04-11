@@ -5,7 +5,7 @@ namespace MessageService.BLL.DTOs
     public class MessageDTO
     {
         [Required]
-        public string message { get; set; }
+        public string Message { get; set; }
 
         [Required]
         public Guid ChatID { get; set; }

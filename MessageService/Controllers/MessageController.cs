@@ -12,12 +12,10 @@ namespace MessageService.Controllers
     public class MessageController : ControllerBase
     {
         private readonly IMessageRepository _messageRepository;
-        private readonly IChatRepository _chatRepository;
 
-        public MessageController(IMessageRepository messageRepository, IChatRepository chatrepository)
+        public MessageController(IMessageRepository messageRepository)
         {
             _messageRepository = messageRepository;
-            _chatRepository = chatrepository;
         }
 
         [Authorize]
@@ -26,24 +24,8 @@ namespace MessageService.Controllers
         {
             try
             {
-                ServiceResponse<Guid> response = await _messageRepository.SendMessage(messageDTO);
+                ServiceResponse<Message> response = await _messageRepository.SendMessage(messageDTO);
                 return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        [Authorize]
-        [HttpGet("GetChatsByUserID")]
-        public async Task<IActionResult> GetChatsByUserID(Guid UserID)
-        {
-            try
-            {
-                List<Chat> chats = await _chatRepository.GetAllByUserID(UserID);
-                return Ok(chats);
             }
             catch (Exception ex)
             {

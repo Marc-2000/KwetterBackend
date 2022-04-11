@@ -34,11 +34,11 @@ namespace TweetService.Controllers
         }
 
         [HttpDelete("DeleteTweet")]
-        public async Task<IActionResult> DeleteTweet([FromBody] Guid TweetID)
+        public async Task<IActionResult> DeleteTweet([FromBody] Guid tweetId)
         {
             try
             {
-                ServiceResponse<Tweet> response = await _tweetRepository.DeleteTweet(TweetID);
+                ServiceResponse<Tweet> response = await _tweetRepository.DeleteTweet(tweetId);
                 return Ok(response);
             }
             catch (Exception ex)

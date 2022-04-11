@@ -58,9 +58,7 @@ namespace TweetService.BLL.Repositories
 
                 if (tweet == null)
                 {
-                    response.Message = "Tweet does not exist, or is already deleted!";
-                    response.Success = false;
-                    return response;
+                    return response.BadResponse("Tweet does not exist, or is already deleted!");
                 }
 
                 TaggedUser taggedUsers = await _context.TaggedUsers.FirstOrDefaultAsync(x => x.TweetID == tweetId);
@@ -90,7 +88,7 @@ namespace TweetService.BLL.Repositories
         {
             string[] words = tweet.Text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
-            List<string> hashtags = new List<string>();
+            List<string> hashtags = new();
 
             for (int i = 0; i < words.Length; i++)
             {
@@ -143,7 +141,7 @@ namespace TweetService.BLL.Repositories
         {
             string[] words = tweet.Text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
-            List<string> mentions = new List<string>();
+            List<string> mentions = new();
 
             for (int i = 0; i < words.Length; i++)
             {

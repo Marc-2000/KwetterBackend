@@ -15,22 +15,30 @@ namespace MessageService.BLL.Repositories
             _context = context;
         }
 
-        public async Task<ServiceResponse<Guid>> SendMessage(MessageDTO messageDTO)
+        public async Task<ServiceResponse<Message>> SendMessage(MessageDTO messageDTO)
         {
-            ServiceResponse<Guid> response = new ServiceResponse<Guid>();
+            ServiceResponse<Message> response = new();
 
-            Message message = new()
+            try
             {
-                Text = messageDTO.message,
-                UserID = messageDTO.UserID,
-                ChatID = messageDTO.ChatID,
-                Time = DateTime.Now
-            };
+                Message message = new()
+                {
+                    Text = messageDTO.Message,
+                    UserID = messageDTO.UserID,
+                    ChatID = messageDTO.ChatID,
+                    Time = DateTime.Now
+                };
 
-            await _context.Messages.AddAsync(message);
-            await _context.SaveChangesAsync();
+                await _context.Messages.AddAsync(message);
+                await _context.SaveChangesAsync();
 
-            return response;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return response.BadResponse("Something went wrong. Please reload the page and try again.");
+            }
         }
     }
 }

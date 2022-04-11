@@ -8,7 +8,7 @@ namespace MessageService.BLL.Models
         public Guid ID { get; set; }
 
         public string Username { get; set; }
-
+        //profilepicture!
         public List<ChatUser> ChatUsers { get; set; }
     }
 }

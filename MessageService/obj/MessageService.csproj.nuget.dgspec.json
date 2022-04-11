@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\marcd\\Desktop\\Kwetter\\KwetterBackend\\MessageService\\MessageService.csproj": {}
+    "C:\\Users\\Arctic Secrets\\Desktop\\Kwetter\\KwetterBackend\\MessageService\\MessageService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\marcd\\Desktop\\Kwetter\\KwetterBackend\\MessageService\\MessageService.csproj": {
+    "C:\\Users\\Arctic Secrets\\Desktop\\Kwetter\\KwetterBackend\\MessageService\\MessageService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marcd\\Desktop\\Kwetter\\KwetterBackend\\MessageService\\MessageService.csproj",
+        "projectUniqueName": "C:\\Users\\Arctic Secrets\\Desktop\\Kwetter\\KwetterBackend\\MessageService\\MessageService.csproj",
         "projectName": "MessageService",
-        "projectPath": "C:\\Users\\marcd\\Desktop\\Kwetter\\KwetterBackend\\MessageService\\MessageService.csproj",
-        "packagesPath": "C:\\Users\\marcd\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marcd\\Desktop\\Kwetter\\KwetterBackend\\MessageService\\obj\\",
+        "projectPath": "C:\\Users\\Arctic Secrets\\Desktop\\Kwetter\\KwetterBackend\\MessageService\\MessageService.csproj",
+        "packagesPath": "C:\\Users\\Arctic Secrets\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Arctic Secrets\\Desktop\\Kwetter\\KwetterBackend\\MessageService\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\marcd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Arctic Secrets\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
