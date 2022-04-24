@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TweetService", "TweetServic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "UserService\UserService.csproj", "{B853ADB0-F9C9-49CB-8F28-69DDBAFE3F99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIGateway", "APIGateway\APIGateway.csproj", "{06AEC2BC-FA5F-4B96-BC66-F25B3A1E145E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B853ADB0-F9C9-49CB-8F28-69DDBAFE3F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B853ADB0-F9C9-49CB-8F28-69DDBAFE3F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B853ADB0-F9C9-49CB-8F28-69DDBAFE3F99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06AEC2BC-FA5F-4B96-BC66-F25B3A1E145E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06AEC2BC-FA5F-4B96-BC66-F25B3A1E145E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06AEC2BC-FA5F-4B96-BC66-F25B3A1E145E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06AEC2BC-FA5F-4B96-BC66-F25B3A1E145E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
