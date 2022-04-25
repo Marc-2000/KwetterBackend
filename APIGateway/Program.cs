@@ -2,7 +2,7 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
 IConfiguration configuration = new ConfigurationBuilder()
-                            .AddJsonFile($"ocelot.json")
+                            .AddJsonFile("ocelot.json")
                             .Build();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,21 +20,10 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddOcelot(configuration);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseCors("cors");
+
 app.UseOcelot();
 
 app.Run();
