@@ -2,12 +2,28 @@ using MessageService.BLL.Repositories;
 using MessageService.BLL.RepositoryInterfaces;
 using MessageService.DAL.Context;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
+
+Log.Information("Starting Message Microservice");
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Host.UseSerilog((ctx, logConfig) =>
+{
+    logConfig.WriteTo.Console()
+        .ReadFrom.Configuration(ctx.Configuration)
+        .Enrich.WithEnvironmentName()
+        .Enrich.WithMachineName()
+        .Enrich.WithProperty("Version", 1);
+});
 
+// Add services to the container.
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

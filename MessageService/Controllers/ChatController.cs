@@ -18,7 +18,7 @@ namespace MessageService.Controllers
             _chatRepository = chatrepository;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("CreateChat")]
         public async Task<IActionResult> CreateChat(ChatDTO chatDTO)
         {
@@ -34,7 +34,7 @@ namespace MessageService.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("GetChatsByUserID")]
         public async Task<IActionResult> GetChatsByUserId(Guid userId)
         {
@@ -42,6 +42,22 @@ namespace MessageService.Controllers
             {
                 List<Chat> chats = await _chatRepository.GetAllByUserID(userId);
                 return Ok(chats);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        //[Authorize]
+        [HttpDelete("DeleteChat")]
+        public async Task<IActionResult> DeleteChat(Guid chatId)
+        {
+            try
+            {
+                ServiceResponse<Chat> response = await _chatRepository.DeleteChat(chatId);
+                return Ok(response);
             }
             catch (Exception ex)
             {

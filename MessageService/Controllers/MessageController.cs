@@ -12,18 +12,21 @@ namespace MessageService.Controllers
     public class MessageController : ControllerBase
     {
         private readonly IMessageRepository _messageRepository;
+        private readonly ILogger<MessageController> _logger;
 
-        public MessageController(IMessageRepository messageRepository)
+        public MessageController(IMessageRepository messageRepository, ILogger<MessageController> logger)
         {
             _messageRepository = messageRepository;
+            _logger = logger;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("SendMessage")]
         public async Task<IActionResult> SendMessage([FromBody] MessageDTO messageDTO)
         {
             try
             {
+                _logger.LogInformation("Creating new message", messageDTO);
                 ServiceResponse<Message> response = await _messageRepository.SendMessage(messageDTO);
                 return Ok(response);
             }
@@ -33,5 +36,7 @@ namespace MessageService.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        //getmessagesbychatid
     }
 }

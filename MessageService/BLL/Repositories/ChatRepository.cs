@@ -18,7 +18,7 @@ namespace MessageService.BLL.Repositories
         public async Task<ServiceResponse<Chat>> CreateChat(ChatDTO chatDTO)
         {
             ServiceResponse<Chat> response = new();
-
+            //checkexistingchat
             try
             {
                 User creator = await _context.Users.FirstOrDefaultAsync(x => x.ID == chatDTO.CreatorID);
@@ -76,6 +76,30 @@ namespace MessageService.BLL.Repositories
             }
 
             return chats;
+        }
+
+        public async Task<ServiceResponse<Chat>> DeleteChat(Guid ChatId)
+        {
+            ServiceResponse<Chat> response = new();
+
+            try
+            {
+                Chat chat = await _context.Chats.FirstOrDefaultAsync(u => u.ID == ChatId);
+
+                if (chat == null) return response.BadResponse("This chat does not exist!");
+
+                _context.Chats.Remove(chat);
+                await _context.SaveChangesAsync();
+
+                response.Message = "Chat has been removed!";
+                response.Success = true;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return response.BadResponse("Something went wrong. Please reload the page and try again.");
+            }
         }
     }
 }

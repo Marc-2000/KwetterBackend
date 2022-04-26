@@ -9,5 +9,6 @@ namespace MessageService.BLL.RepositoryInterfaces
     {
         public Task<ServiceResponse<Chat>> CreateChat(ChatDTO chatDTO);
         public Task<List<Chat>> GetAllByUserID(Guid UserID);
+        public Task<ServiceResponse<Chat>> DeleteChat(Guid ChatId);
     }
 }

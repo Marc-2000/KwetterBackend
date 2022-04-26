@@ -102,14 +102,14 @@ namespace UserService.BLL.Repositories
             return response;
         }
 
-        public async Task<bool> EmailExists(string email)
+        private async Task<bool> EmailExists(string email)
         {
             //Check if email already exists
             if (await _context.Users.AnyAsync(x => x.Email.ToLower() == email.ToLower())) return true;
             return false;
         }
 
-        public async Task<bool> UsernameExists(string username)
+        private async Task<bool> UsernameExists(string username)
         {
             //Check if username already exists
             if (await _context.Users.AnyAsync(x => x.Email.ToLower() == username.ToLower())) return true;
