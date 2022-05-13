@@ -130,3 +130,13 @@ C:\Users\marcd\Desktop\Kwetter\KwetterBackend\UserService\obj\Debug\net6.0\refin
 C:\Users\marcd\Desktop\Kwetter\KwetterBackend\UserService\obj\Debug\net6.0\UserService.pdb
 C:\Users\marcd\Desktop\Kwetter\KwetterBackend\UserService\obj\Debug\net6.0\UserService.genruntimeconfig.cache
 C:\Users\marcd\Desktop\Kwetter\KwetterBackend\UserService\obj\Debug\net6.0\ref\UserService.dll
+C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\UserService\bin\Debug\net6.0\Automatonymous.dll
+C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\UserService\bin\Debug\net6.0\GreenPipes.dll
+C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\UserService\bin\Debug\net6.0\MassTransit.dll
+C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\UserService\bin\Debug\net6.0\MassTransit.AspNetCoreIntegration.dll
+C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\UserService\bin\Debug\net6.0\MassTransit.ExtensionsDependencyInjectionIntegration.dll
+C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\UserService\bin\Debug\net6.0\MassTransit.RabbitMqTransport.dll
+C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\UserService\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\UserService\bin\Debug\net6.0\NewId.dll
+C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\UserService\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\UserService\bin\Debug\net6.0\RabbitMQ.Client.dll

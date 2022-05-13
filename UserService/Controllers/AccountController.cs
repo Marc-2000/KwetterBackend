@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Models.Models;
 using UserService.BLL.DTOs;
 using UserService.BLL.Models;
 using UserService.BLL.RepositoryInterfaces;
@@ -12,10 +14,14 @@ namespace UserService.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly IBus _busService;
+        private IPublishEndpoint publishEndpoint;
 
-        public AccountController(IAccountRepository accountRepository)
+        public AccountController(IAccountRepository accountRepository, IBus busService, IPublishEndpoint publishEndpoint)
         {
             _accountRepository = accountRepository;
+            _busService = busService;
+            this.publishEndpoint = publishEndpoint;
         }
 
         [HttpPost("Register")]
@@ -24,6 +30,14 @@ namespace UserService.Controllers
             try
             {
                 ServiceResponse<User> response = await _accountRepository.Register(user);
+                if (response != null)
+                {
+                    await publishEndpoint.Publish<QueueMessage<SharedUser>>(new QueueMessage<SharedUser>
+                    {
+                        Data = new SharedUser { Id = response.Id, Username = response.Username, Email = response.Email, PicturePath = response.PicturePath },
+                        Type = QueueMessageType.Insert
+                    });
+                }
                 return Ok(response);
             }
             catch (Exception ex)

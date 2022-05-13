@@ -1,5 +1,8 @@
+using GreenPipes;
+using MassTransit;
 using MessageService.BLL.Repositories;
 using MessageService.BLL.RepositoryInterfaces;
+using MessageService.Consumers;
 using MessageService.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -22,6 +25,27 @@ builder.Host.UseSerilog((ctx, logConfig) =>
 });
 
 // Add services to the container.
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<UserConsumer>();
+    x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cur =>
+    {
+        cur.Host(new Uri("rabbitmq://localhost"), h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+        cur.ReceiveEndpoint("userQueue", oq =>
+        {
+            oq.PrefetchCount = 20;
+            oq.UseMessageRetry(r => r.Interval(2, 100));
+            oq.ConfigureConsumer<UserConsumer>(provider);
+        });
+    }));
+});
+
+builder.Services.AddMassTransitHostedService();
+
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

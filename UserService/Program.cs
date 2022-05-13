@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -34,6 +35,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         ValidateAudience = false
                     };
                 });
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
+    {
+        config.Host(new Uri("rabbitmq://localhost:5672"), h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+    }));
+});
+
+builder.Services.AddMassTransitHostedService();
 
 var app = builder.Build();
 
