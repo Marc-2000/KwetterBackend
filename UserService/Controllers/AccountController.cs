@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Models.Models;
 using UserService.BLL.DTOs;
-using UserService.BLL.Models;
+using UserService.Entities;
 using UserService.BLL.RepositoryInterfaces;
 using UserService.DAL.Context;
 
@@ -29,15 +29,14 @@ namespace UserService.Controllers
         {
             try
             {
-                ServiceResponse<User> response = await _accountRepository.Register(user);
+                ServiceResponse response = await _accountRepository.Register(user);
                 if (response != null)
                 {
-                    await publishEndpoint.Publish<QueueMessage<SharedUser>>(new QueueMessage<SharedUser>
-                    {
-                        Data = new SharedUser { Id = response.Id, Username = response.Username, Email = response.Email, PicturePath = response.PicturePath },
-                        Type = QueueMessageType.Insert
-                    });
+                    Uri uri = new("rabbitmq://localhost/userQueue");
+                    var endPoint = await _busService.GetSendEndpoint(uri);
+                    await endPoint.Send(response);
                 }
+                Console.WriteLine(response);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -52,7 +51,7 @@ namespace UserService.Controllers
         {
             try
             {
-                ServiceResponse<User> response = await _accountRepository.Login(user);
+                ServiceResponse response = await _accountRepository.Login(user);
                 return Ok(response);
             }
             catch (Exception ex)

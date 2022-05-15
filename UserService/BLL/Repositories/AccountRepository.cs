@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using UserService.BLL.DTOs;
-using UserService.BLL.Models;
+using UserService.Entities;
 using UserService.BLL.RepositoryInterfaces;
 using UserService.DAL.Context;
 
@@ -22,48 +22,36 @@ namespace UserService.BLL.Repositories
             _configuration = configuration;
         }
 
-        public async Task<ServiceResponse<User>> Login(UserLoginDTO user)
+        public async Task<ServiceResponse> Login(UserLoginDTO user)
         {
-            // Create new empty response
-            ServiceResponse<User> response = new();
-
-            //Retrieve user with e-mail from request
             User retrievedUser = await _context.Users.Include(pr => pr.UserRoles).ThenInclude(r => r.Role).FirstOrDefaultAsync(x => x.Email.ToLower().Equals(user.Email.ToLower()));
 
             if (retrievedUser == null || !VerifyPasswordHash(user.Password, retrievedUser.PasswordHash, retrievedUser.PasswordSalt))
             {
-                //User didn't give the right credentials, so return error
-                response.Success = false;
-                response.Message = "Credentials are not valid!";
+                return new ServiceResponse("Credentials are not valid.");
             }
             else
             {
-                //User exists and password is correct, so set token
-                response.Token = CreateToken(retrievedUser);
-                response.Message = "Successfully logged in!";
+                string token = CreateToken(retrievedUser);
+                return new ServiceResponse(retrievedUser, token, "Successfully logged in.");
             }
-            //return the filled response with token or error message
-            return response;
         }
 
-        public async Task<ServiceResponse<User>> Register(UserRegisterDTO user)
+        public async Task<ServiceResponse> Register(UserRegisterDTO user)
         {
-            //Create new empty response
-            ServiceResponse<User> response = new();
-
             if (await EmailExists(user.Email))
             {
-                return response.BadResponse("e-mailaddress is already in use.");
+                return new ServiceResponse("e-mailaddress is already in use.");
             }
 
             if (await UsernameExists(user.Username))
             {
-                return response.BadResponse("Username is already in use.");
+                return new ServiceResponse("Username is already in use.");
             }
 
             if (!user.Password.Equals(user.ConfirmPassword))
             {
-                return response.BadResponse("The passwords do not match.");
+                return new ServiceResponse("The passwords do not match.");
             }
 
             //Create password hash with salt
@@ -81,25 +69,30 @@ namespace UserService.BLL.Repositories
             //Add default role to new user
             Role defaultRole = _context.Roles.FirstOrDefault(x => x.Name.Equals("User"));
 
-            UserRole newPersonRole = new()
+            if (defaultRole != null)
             {
-                UserID = NewUser.ID,
-                User = NewUser,
-                RoleID = defaultRole.ID,
-                Role = defaultRole
-            };
+                UserRole newPersonRole = new()
+                {
+                    UserID = NewUser.ID,
+                    User = NewUser,
+                    RoleID = defaultRole.ID,
+                    Role = defaultRole
+                };
 
-            //Add user and user-role to database
-            await _context.Users.AddAsync(NewUser);
-            await _context.UserRoles.AddAsync(newPersonRole);
-            await _context.SaveChangesAsync();
+                //Add user and user-role to database
+                await _context.Users.AddAsync(NewUser);
+                await _context.UserRoles.AddAsync(newPersonRole);
+                await _context.SaveChangesAsync();
 
-            //set return data
-            response.Message = "User registered succesfully.";
-            response.Token = CreateToken(NewUser);
+                string token = CreateToken(NewUser);
 
-            //return userID 
-            return response;
+                return new ServiceResponse(NewUser, token, "User registered successfully.");
+            }
+            else
+            {
+                return new ServiceResponse("No default role found in database.");
+            }
+            
         }
 
         private async Task<bool> EmailExists(string email)

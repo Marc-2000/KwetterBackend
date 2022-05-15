@@ -1,15 +1,30 @@
-﻿namespace UserService.DAL.Context
+﻿using UserService.Entities;
+
+namespace UserService.DAL.Context
 {
-    public class ServiceResponse<T>
+    public class ServiceResponse
     {
         public bool Success { get; set; } = true;
         public string? Message { get; set; } = null;
         public string? Token { get; set; } = null;
-        public ServiceResponse<T> BadResponse(string message)
+
+        public Guid Id { get; set; }
+        public string? Username { get; set; }
+        public string? Email { get; set; }
+
+        public ServiceResponse(User user, string accessToken, string message)
+        {
+            Id = user.ID;
+            Username = user.Username;
+            Email = user.Email;
+            Token = accessToken;
+            Message = message;
+        }
+
+        public ServiceResponse(string message)
         {
             Success = false;
             Message = message;
-            return this;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UserService.BLL.Models;
+using UserService.Entities;
 
 namespace UserService.DAL.Context
 {

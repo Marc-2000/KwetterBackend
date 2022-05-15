@@ -143,3 +143,30 @@ C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\
 C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\RabbitMQ.Client.dll
 C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Shared.Models.dll
 C:\Users\Arctic Secrets\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Shared.Models.pdb
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Automatonymous.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\GreenPipes.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\MassTransit.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\MassTransit.AspNetCoreIntegration.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\MassTransit.ExtensionsDependencyInjectionIntegration.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\MassTransit.RabbitMqTransport.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\NewId.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\RabbitMQ.Client.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.AspNetCore.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.Enrichers.Environment.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.Expressions.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.Extensions.Hosting.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.Extensions.Logging.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.Formatting.Compact.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.Settings.Configuration.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.Sinks.Console.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.Sinks.Debug.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.Sinks.File.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.Sinks.PeriodicBatching.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Serilog.Sinks.Seq.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Shared.Models.dll
+C:\Users\marcd\Desktop\Kwetter\KwetterBackend\MessageService\bin\Debug\net6.0\Shared.Models.pdb
