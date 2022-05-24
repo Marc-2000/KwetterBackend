@@ -28,20 +28,17 @@ builder.Host.UseSerilog((ctx, logConfig) =>
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<UserConsumer>();
-    x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cur =>
+    x.AddConsumer<UserConsumer>();
+
+    x.UsingRabbitMq((ctx, cfg) =>
     {
-        cur.Host(new Uri("rabbitmq://localhost"), h =>
+        cfg.Host("amqp://guest:guest@localhost:5672");
+
+        cfg.ReceiveEndpoint("userMessageQueue", c =>
         {
-            h.Username("guest");
-            h.Password("guest");
+            c.ConfigureConsumer<UserConsumer>(ctx);
         });
-        cur.ReceiveEndpoint("userQueue", oq =>
-        {
-            oq.PrefetchCount = 20;
-            oq.UseMessageRetry(r => r.Interval(2, 100));
-            oq.ConfigureConsumer<UserConsumer>(provider);
-        });
-    }));
+    });
 });
 
 builder.Services.AddMassTransitHostedService();
@@ -54,6 +51,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {

@@ -161,7 +161,7 @@ namespace TweetService.BLL.Repositories
                 {
                     TaggedUser taggedUsers = new()
                     {
-                        UserID = userFromDb.ID,
+                        UserID = userFromDb.Id,
                         TweetID = tweet.ID
                     };
 

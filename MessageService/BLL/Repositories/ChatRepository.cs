@@ -21,8 +21,8 @@ namespace MessageService.BLL.Repositories
             //checkexistingchat
             try
             {
-                User creator = await _context.Users.FirstOrDefaultAsync(x => x.ID == chatDTO.CreatorID);
-                User participant = await _context.Users.FirstOrDefaultAsync(x => x.ID == chatDTO.ParticipantID);
+                User creator = await _context.Users.FirstOrDefaultAsync(x => x.Id == chatDTO.CreatorID);
+                User participant = await _context.Users.FirstOrDefaultAsync(x => x.Id == chatDTO.ParticipantID);
 
                 if (creator == null || participant == null) return response.BadResponse("This user does not exist!");
 
@@ -68,7 +68,7 @@ namespace MessageService.BLL.Repositories
         {
             List<Chat> chats = new();
 
-            User user = await _context.Users.Include(u => u.ChatUsers).ThenInclude(cu => cu.Chat).ThenInclude(ms => ms.Messages).FirstOrDefaultAsync(u => u.ID == userId);
+            User user = await _context.Users.Include(u => u.ChatUsers).ThenInclude(cu => cu.Chat).ThenInclude(ms => ms.Messages).FirstOrDefaultAsync(u => u.Id == userId);
 
             for (int i = 0; i < user.ChatUsers.Count; i++)
             {

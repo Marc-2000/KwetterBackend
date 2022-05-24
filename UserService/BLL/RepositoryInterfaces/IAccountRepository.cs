@@ -11,6 +11,7 @@ namespace UserService.BLL.RepositoryInterfaces
     {
         Task<ServiceResponse> Register(UserRegisterDTO user);
         Task<ServiceResponse> Login(UserLoginDTO user);
+        Task<ServiceResponse> Delete(Guid userId);
         Task<User> GetByID(Guid id);
     }
 }

@@ -8,6 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["MessageService/MessageService.csproj", "MessageService/"]
+COPY ["Shared.Models/Shared.Models.csproj", "Shared.Models/"]
 RUN dotnet restore "MessageService/MessageService.csproj"
 COPY . .
 WORKDIR "/src/MessageService"

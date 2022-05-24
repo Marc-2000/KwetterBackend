@@ -13,20 +13,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<UserConsumer>();
-    x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cur =>
+    x.AddConsumer<UserConsumer>();
+
+    x.UsingRabbitMq((ctx, cfg) =>
     {
-        cur.Host(new Uri("rabbitmq://localhost"), h =>
+        cfg.Host("amqp://guest:guest@localhost:5672");
+
+        cfg.ReceiveEndpoint("userTweetQueue", c =>
         {
-            h.Username("guest");
-            h.Password("guest");
+            c.ConfigureConsumer<UserConsumer>(ctx);
         });
-        cur.ReceiveEndpoint("userQueue", oq =>
-        {
-            oq.PrefetchCount = 20;
-            oq.UseMessageRetry(r => r.Interval(2, 100));
-            oq.ConfigureConsumer<UserConsumer>(provider);
-        });
-    }));
+    });
 });
 
 builder.Services.AddMassTransitHostedService();
@@ -37,6 +34,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ITweetRepository, TweetRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {

@@ -14,13 +14,11 @@ namespace UserService.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly IBus _busService;
-        private IPublishEndpoint publishEndpoint;
+        private readonly IPublishEndpoint publishEndpoint;
 
-        public AccountController(IAccountRepository accountRepository, IBus busService, IPublishEndpoint publishEndpoint)
+        public AccountController(IAccountRepository accountRepository, IPublishEndpoint publishEndpoint)
         {
             _accountRepository = accountRepository;
-            _busService = busService;
             this.publishEndpoint = publishEndpoint;
         }
 
@@ -30,13 +28,14 @@ namespace UserService.Controllers
             try
             {
                 ServiceResponse response = await _accountRepository.Register(user);
-                if (response != null)
+                if (response.Success == true)
                 {
-                    Uri uri = new("rabbitmq://localhost/userQueue");
-                    var endPoint = await _busService.GetSendEndpoint(uri);
-                    await endPoint.Send(response);
+                    await publishEndpoint.Publish(new QueueMessage<SharedUser>
+                    {
+                        Data = new SharedUser { Id = response.Id, Username = response.Username},
+                        Type = QueueMessageType.Insert
+                    });
                 }
-                Console.WriteLine(response);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -52,6 +51,29 @@ namespace UserService.Controllers
             try
             {
                 ServiceResponse response = await _accountRepository.Login(user);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete([FromBody] Guid userId)
+        {
+            try
+            {
+                ServiceResponse response = await _accountRepository.Delete(userId);
+                if (response.Success == true)
+                {
+                    await publishEndpoint.Publish(new QueueMessage<SharedUser>
+                    {
+                        Data = new SharedUser { Id = userId },
+                        Type = QueueMessageType.Delete
+                    });
+                }
                 return Ok(response);
             }
             catch (Exception ex)

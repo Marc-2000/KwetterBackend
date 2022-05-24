@@ -95,6 +95,27 @@ namespace UserService.BLL.Repositories
             
         }
 
+        public async Task<ServiceResponse> Delete(Guid userId)
+        {
+            User retrievedUser = await _context.Users.FirstOrDefaultAsync(x => x.ID.Equals(userId));
+
+            if (retrievedUser == null)
+            {
+                return new ServiceResponse("User not found.");
+            }
+            else
+            {
+                _context.Users.Remove(retrievedUser);
+                await _context.SaveChangesAsync();
+                ServiceResponse response = new()
+                {
+                    Success = true,
+                    Message = "Successfully deleted the user."
+                };
+                return response;
+            }
+        }
+
         private async Task<bool> EmailExists(string email)
         {
             //Check if email already exists

@@ -5,7 +5,7 @@ namespace MessageService.BLL.Models
     public class User
     {
         [Key]
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
 
         public string Username { get; set; }
         //profilepicture
