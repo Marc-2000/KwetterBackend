@@ -20,6 +20,20 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'SonarCloud Connection'
+        organization: '427767'
+        scannerMode: 'MSBuild'
+        projectKey: '427767_KwetterBackend.git'
+        projectName: 'KwetterBackend.git'
+    - task: DotNetCoreCLI@2
+      displayName: Build project
+      inputs:
+        command: 'build'
+        projects: '**/UserService/*.csproj'
+    - task: SonarCloudAnalyze@1
+      displayName: Sonar Cloud analysis
     - task: Docker@2
       displayName: Build an image
       inputs:
