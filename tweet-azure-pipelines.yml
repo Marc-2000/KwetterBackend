@@ -38,8 +38,10 @@ stages:
       displayName: Build and push an image
       inputs:
         containerRegistry: 'kwetter'
-        repository: 'tweetservice'
+        repository: 'marcdenhollander/tweetservice'
         command: 'buildAndPush'
         dockerfile: '$(Build.SourcesDirectory)/TweetService/Dockerfile'
         buildContext: '$(Build.SourcesDirectory)'
+        tags: |
+          tweetservice
     
