@@ -40,5 +40,6 @@ stages:
         containerRegistry: 'kwetter'
         repository: 'tweetservice'
         command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/TweetService/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)'
     
