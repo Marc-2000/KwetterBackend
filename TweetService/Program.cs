@@ -1,32 +1,11 @@
-using GreenPipes;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using TweetService.BLL.Repositories;
 using TweetService.BLL.RepositoryInterfaces;
-using TweetService.Consumers;
 using TweetService.DAL.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddMassTransit(x =>
-{
-    x.AddConsumer<UserConsumer>();
-    x.AddConsumer<UserConsumer>();
-
-    x.UsingRabbitMq((ctx, cfg) =>
-    {
-        cfg.Host("amqp://guest:guest@localhost:5672");
-
-        cfg.ReceiveEndpoint("userTweetQueue", c =>
-        {
-            c.ConfigureConsumer<UserConsumer>(ctx);
-        });
-    });
-});
-
-builder.Services.AddMassTransitHostedService();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -52,10 +31,8 @@ if (app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-
-    var context = services.GetRequiredService<DataContext>();
-    context.Database.EnsureCreated();
+    var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+    db.Database.Migrate();
 }
 
 app.UseHttpsRedirection();
