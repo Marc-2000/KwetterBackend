@@ -35,11 +35,13 @@ stages:
     - task: SonarCloudAnalyze@1
       displayName: Sonar Cloud analysis
     - task: Docker@2
-      displayName: Build an image
+      displayName: Build and push an image
       inputs:
-        command: build
+        containerRegistry: 'kwetter'
+        repository: 'marcdenhollander/tweetservice'
+        command: 'buildAndPush'
         dockerfile: '$(Build.SourcesDirectory)/TweetService/Dockerfile'
         buildContext: '$(Build.SourcesDirectory)'
         tags: |
-          $(tag)
+          tweetservice
     
