@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tweetservice
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    app: tweetservice
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tweetservice
+spec:
+  selector:
+    matchLabels:
+      app: tweetservice
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: tweetservice
+    spec:
+      containers:
+      - name: tweetservice
+        image: marcdenhollander/tweetservice:tweetservice
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
